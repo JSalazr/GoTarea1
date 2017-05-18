@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"log"
 	"googlemaps.github.io/maps"
-	"github.com/kr/pretty"
 	"golang.org/x/net/context"
 	"fmt"
 	"bytes"
@@ -58,12 +57,12 @@ func ejercicio1(w http.ResponseWriter, r *http.Request) {
 	if b != nil {
 		log.Fatalf("fatal error: %s", b)
 	}
-	pretty.Println(resp)
+	fmt.Println(resp)
 	buffer := new(bytes.Buffer)
 	buffer.WriteString("{\"ruta\":[")
 	json.NewDecoder(r.Body).Decode(&resp)
 	//ret := make(map[string]Dir, len(resp[0].Legs[0].Steps)+1)
-	//pretty.Println(resp[0].Legs[0].Steps[0].StartLocation)
+	//fmt.Println(resp[0].Legs[0].Steps[0].StartLocation)
 	for x :=0; x< len(resp[0].Legs[0].Steps); x++{
 		buffer.WriteString("{\"lat\":")
 		buffer.WriteString(strconv.FormatFloat(resp[0].Legs[0].Steps[x].StartLocation.Lat,'f',5, 64))
@@ -82,15 +81,15 @@ func ejercicio1(w http.ResponseWriter, r *http.Request) {
 	}
 
 	buffer.WriteString("]}")
-	pretty.Println(buffer.String());
+	fmt.Println(buffer.String());
 	fmt.Fprintf(w, buffer.String());
 		/*data := map[string]interface{}{"ruta": ret }
 		j, y := json.Marshal(data)
 		if y != nil {
 			log.Fatalf("fatal error: %s", y)
 		}
-		pretty.Println(ret)
-		pretty.Println(string(j))*/
+		fmt.Println(ret)
+		fmt.Println(string(j))*/
 }
 
 func ejercicio2(w http.ResponseWriter, r *http.Request) {
@@ -114,7 +113,7 @@ func ejercicio2(w http.ResponseWriter, r *http.Request) {
 		log.Fatalf("fatal error: %s", b)
 	}
 	json.NewDecoder(r.Body).Decode(&resp)
-	pretty.Println(resp)
+	fmt.Println(resp)
 
 	c, _ = maps.NewClient(maps.WithAPIKey("AIzaSyDYY9Dny4Iu9eFN0wU6EuVeAq2KsPQXKcY"))
 	t := &maps.NearbySearchRequest{
