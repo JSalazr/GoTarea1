@@ -50,27 +50,28 @@ func ejercicio1(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "{\"error\":\"No se especifico origen\"}", 400);
 		return
 	}
-	fmt.Println(address)
+	//fmt.Println(address)
 	c, er1 := maps.NewClient(maps.WithAPIKey("AIzaSyAzzrnc71pLvEvOdY322DQwwbUsFQZT7Vg"))
 	if er1 !=nil {
-		http.Error(w, "{\"error\":\"No se especifico origen\"}", 500);
+		http.Error(w, "{\"error\":\"No se especifico origen1\"}", 500);
 		return
 	}
 
-	pat := regexp.MustCompile("a-zA-Z\\d\\, ]*")
+	pat := regexp.MustCompile("[a-zA-Z\\d\\, ]*")
 	sap := pat.FindString(address.Origen)
 	sap2 := pat.FindString(address.Destino)
 	fmt.Println(sap);
+	fmt.Println(sap2);
 	a := &maps.DirectionsRequest{
 		Origin:      sap,
 		Destination: sap2,
 	}
 	resp, _, er1 := c.Directions(context.Background(), a)
 	if er1 !=nil {
-		http.Error(w, "{\"error\":\"No se especifico origen\"}", 500);
+		http.Error(w, "{\"error\":\"No se especifico origen2\"}", 500);
 		return
 	}
-	pretty.Println(resp)
+	//pretty.Println(resp)
 	buffer := new(bytes.Buffer)
 	buffer.WriteString("{\"ruta\":[")
 	json.NewDecoder(r.Body).Decode(&resp)
@@ -94,7 +95,7 @@ func ejercicio1(w http.ResponseWriter, r *http.Request) {
 	}
 
 	buffer.WriteString("]}")
-	pretty.Println(buffer.String());
+	//pretty.Println(buffer.String());
 	fmt.Fprintf(w, buffer.String());
 		/*data := map[string]interface{}{"ruta": ret }
 		j, y := json.Marshal(data)
@@ -150,11 +151,7 @@ func ejercicio2(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "{\"error\":\"No se especifico origen\"}", 500);
 		return
 	}
-	er2 = json.NewDecoder(r.Body).Decode(&resp1)
-	if er2 !=nil {
-		http.Error(w, "{\"error\":\"No se especifico origen\"}", 500);
-		return
-	}
+	json.NewDecoder(r.Body).Decode(&resp1)
 
 	buffer := new(bytes.Buffer)
 	buffer.WriteString("{\"restaurantes\":[")
